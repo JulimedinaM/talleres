@@ -1,0 +1,900 @@
+//integrantes:
+//juan manuel cardona , juliana medina , fabian andres cuartas
+
+
+
+
+
+#include <stdio.h>
+#include<stdlib.h>
+#define reservar_memoria (nodo *)malloc(sizeof(nodo));
+
+struct nodo {
+	int dato ;
+	nodo * siguiente;
+	nodo * atras;
+};
+nodo * cabeza = NULL;
+nodo * fin = NULL;
+nodo * primero = NULL;//juego
+nodo * ultimo = NULL;//juego
+// PROTOTIPO MENU PRINCIPAL
+void menu();
+//PROTOTIPO MENU LISTA SIMPLE 
+void listaSimple();
+void insertar_lS();
+void mostrar_lS();
+void buscar_lS();
+void editar_lS();
+void eliminar_lS();
+void eliminarTd_lS();
+void ordenarDatos_lS();
+bool listaVacia();
+//PROTOTIPO MENU LISTA DOBLE 
+void listaDoble();
+void insertar_lD();
+void mostrar_lD(nodo *, int);
+void buscar_lD();
+void editar_lD();
+void eliminar_lD();
+void eliminarTd_lD();
+void ordenarDatos_lD();
+/////juego de josephus
+void josephus();
+void insert_Cant_Personas(nodo*& , nodo*&);
+void mostrar_Cant_Personas(nodo *);
+void buscar_Participantes(nodo*);
+void modificar_Participante(nodo*&);
+void eliminar_Participante(nodo *&,nodo*&);
+void eliminar_TdsParticipantes(nodo *&,nodo *&);
+void jugar(nodo *&, nodo*&);
+////variables globales con las cuales hacemos las distintas operaciones en cada funcion
+////esto se hace con el fin de simplificar el codigo
+int opcion,flag,dato,insertar,n;
+int main() {
+	menu();
+	return 0;
+}
+void menu(){
+	int flag=1;
+	while(flag!=0){
+		printf("MENU PRINCIPAL\n");
+		printf("1. Lista simple\n");
+		printf("2. Lista doble\n");
+		printf("3. Juego de josephus\n");
+		printf("0. Salir\n\n");
+		printf("Seleccione una Opcion\n\n");
+		scanf("%d",&opcion);
+		
+		system("cls");
+		switch (opcion){
+			
+		case 1: 
+			listaSimple();
+			system("pause");
+			system("cls");
+			break;
+			
+		case 2: 
+			listaDoble();
+			system("pause");
+			system("cls");
+			break;
+		case 3:
+			josephus();
+			system("pause");
+			system("cls");
+			break;
+			
+		case 0: 
+			flag=0;
+			printf("Salir\n\n");
+			break;	
+			
+		default: 
+			printf("Opcion invalida\n");
+			system("pause");
+			system("cls");
+			break;	
+			
+			
+			
+			
+		}
+		
+	}
+}
+
+//funciones lista simple
+void listaSimple(){
+	flag=1;
+	while(flag!=0){
+		printf("LISTA SIMPLE \n\n");
+		printf("1. Insertar\n");
+		printf("2. Mostrar\n");
+		printf("3. Buscar Elemento\n");
+		printf("4. Editar Elemento\n");
+		printf("5. Eliminar Elemento\n");
+		printf("6. Eliminar Lista Completa\n");
+		printf("7. Ordenar Datos en la Lista\n");
+		printf("8. Lista Vacia\n\n");
+		printf("0. Menu Principal\n\n");
+		printf("Seleccione una Opcion\n\n");
+		scanf("%d",&opcion);
+		
+		system("cls");
+		switch (opcion){
+			
+		case 1: 
+			insertar = 0;
+			insertar_lS();
+			system("pause");
+			system("cls");
+			break;
+			
+		case 2: 
+			mostrar_lS();
+			system("pause");
+			system("cls");
+			break;
+			
+		case 3:
+			buscar_lS();
+			system("pause");
+			system("cls");
+			break;
+		case 4:
+			editar_lS();
+			system("pause");
+			system("cls");
+			break;
+		case 5:
+			eliminar_lS();
+			system("pause");
+			system("cls");
+			break;
+		case 6:
+			eliminarTd_lS();
+			system("pause");
+			system("cls");
+			break;
+		case 7:
+			ordenarDatos_lS();
+			break;
+		case 8:
+			n = listaVacia(); 
+			if ( n== true){
+				printf("Lista Vacia\n");
+			}else{
+				printf("La lista contiene elementos\n");
+			}
+			system("pause");
+			system("cls");
+			break;
+		case 0: 
+			flag=0;
+			printf("Adios\n\n");
+			break;	
+			
+		default: 
+			printf("Opcion invalida\n");
+			system("pause");
+			system("cls");
+			break;	
+			
+			
+			
+			
+		}
+		
+	}
+}
+void insertar_lS(){
+	
+	printf("Para dejar de Ingresar Elementos al Nodo Oprime -1\n");
+	while(insertar != -1){
+		nodo * nuevo_nodo = reservar_memoria;
+		printf("ingrese el dato: ");
+		scanf("%d",&nuevo_nodo->dato);
+		if(nuevo_nodo->dato==-1){
+			insertar = -1;
+		}else{
+			if(cabeza==NULL){
+				cabeza=nuevo_nodo;
+				cabeza->siguiente = NULL;
+				fin = nuevo_nodo;
+			}else{
+				fin->siguiente = nuevo_nodo;
+				nuevo_nodo->siguiente = NULL;
+				fin = nuevo_nodo;
+			}
+			printf("Nodo ingresado con exito\n");
+		}
+		
+	}
+	
+}
+void mostrar_lS(){
+	nodo * actual = reservar_memoria;
+	actual = cabeza;
+	if(cabeza != NULL){
+		while(actual != NULL){
+			printf("%d ",actual->dato);
+			actual=actual->siguiente;		
+		}
+	}else{
+		printf("La Lista Vacia\n");
+	}
+}
+void buscar_lS(){
+	nodo * actual = reservar_memoria;
+	actual = cabeza;
+	int nodoBuscado,encontrado = 0;
+	if(cabeza != NULL){
+		printf("Ingrese el elemento que desea buscar: ");
+		scanf("%d",&nodoBuscado);
+		while(actual != NULL && encontrado !=1){
+			
+			if(actual->dato == nodoBuscado){
+				printf("El nodo con el elemento ( %d ) se encuentra en la lista\n",nodoBuscado);
+				encontrado = 1;
+			}
+			actual=actual->siguiente;	
+		}
+		if (encontrado == 0){
+			printf("La lista no contiene este Elemento\n");
+		}
+	}else{
+		printf("La Lista esta Vacia\n");
+	}
+}
+void editar_lS(){
+	mostrar_lS();
+	nodo * actual = reservar_memoria;
+	actual = cabeza;
+	int nodoBuscado,encontrado = 0;
+	if(cabeza != NULL){
+		printf("Ingrese el elemento que desea editar: ");
+		scanf("%d",&nodoBuscado);
+		while(actual != NULL && encontrado !=1){
+			
+			if(actual->dato == nodoBuscado){
+				printf("Ingrese el Numero por el cual desea cambiar el nodo");
+				scanf("%d",&actual->dato);
+				printf("Elemento editado con exito( %d ) \n",actual->dato);
+				encontrado = 1;
+			}
+			actual=actual->siguiente;	
+		}
+		if (encontrado == 0){
+			printf("La lista no contiene este Elemento\n");
+		}
+	}
+}
+void eliminar_lS(){
+	mostrar_lS();
+	nodo * actual = reservar_memoria;
+	actual = cabeza;	
+	nodo * anterior = reservar_memoria;
+	anterior = NULL;
+	
+	int nodoBuscado,encontrado = 0;
+	if(cabeza != NULL){
+		printf("\nIngrese el elemento que desea Eliminar: ");
+		scanf("%d",&nodoBuscado);
+		while(actual != NULL && encontrado !=1){
+			
+			if(actual->dato == nodoBuscado){
+				
+				if(actual == cabeza){
+					cabeza = cabeza->siguiente;
+				}else{
+					if(actual == fin){
+						anterior->siguiente = NULL;
+						fin = anterior;
+					}else{
+						anterior->siguiente = actual->siguiente;
+					}
+				}
+				printf("\nNodo Eliminado con exito\n");
+				
+				encontrado = 1;
+			}
+			anterior = actual;
+			actual=actual->siguiente;	
+		}
+		if (encontrado == 0){
+			printf("La lista no contiene este Elemento\n");
+		}else{
+			free(anterior); 
+		}
+	}
+}
+void eliminarTd_lS(){
+	nodo * actual = reservar_memoria;
+	actual = cabeza;	
+	if(cabeza != NULL){
+		while(cabeza != NULL ){
+			actual = cabeza;
+			cabeza = cabeza->siguiente;
+			free(actual);
+		}
+		printf("\nLista Eliminada Exitosamente\n");
+	}else{
+		printf("\nLa lista esta vacia\n");
+	}
+}
+void ordenarDatos_lS(){
+	int aux;
+	nodo * x = cabeza;
+	nodo * y = NULL;
+	if (cabeza != NULL){
+		while(x != NULL){
+			y = x -> siguiente;
+			while(y != NULL){
+				if(x -> dato > y -> dato){
+					aux = x -> dato;
+					x -> dato = y -> dato;
+					y -> dato = aux;
+				}
+				y = y -> siguiente;
+			}
+			x = x -> siguiente;
+		}
+	}else{
+		printf("Lista Vacia\n");
+	}
+	
+}
+
+///////
+//FUNCION PARA VALIDAR SI UNA DE LAS LISTAS SE ENCUENTRA VACIA, SI ESTO ES ASI RETORNA "TRUE" Y UN MENSAJE EN PANTALLA
+bool listaVacia(){
+	return (cabeza==NULL)? true:false;
+}
+///////funciones lista doble
+void listaDoble(){
+	flag=1;
+	while(flag!=0){
+		printf("LISTA DOBLE \n\n");
+		printf("1. Insertar\n");
+		printf("2. Mostrar de Izq. a Der.\n");
+		printf("3. Mostrar de Der. a Izq.\n");
+		printf("4. Buscar Elemento\n");
+		printf("5. Editar Elemento\n");
+		printf("6. Eliminar Elemento\n");
+		printf("7. Eliminar Lista Completa\n");
+		printf("8. Ordenar Datos en la Lista\n");
+		printf("9. Lista Vacia\n\n");
+		printf("0. Menu Principal\n\n");
+		printf("Seleccione una Opcion\n\n");
+		scanf("%d",&opcion);
+		system("cls");
+		switch (opcion){
+		case 1: 
+			insertar = 0;
+			insertar_lD();
+			system("pause");
+			system("cls");
+			break;
+		case 2: 
+			n=1;
+			mostrar_lD(cabeza,n);
+			system("pause");
+			system("cls");
+			break;
+		case 3: 
+			n=-1;
+			mostrar_lD(fin,n);
+			system("pause");
+			system("cls");
+			break;
+		case 4:
+			buscar_lD();
+			system("pause");
+			system("cls");
+			break;
+		case 5:
+			editar_lD();
+			system("pause");
+			system("cls");
+			break;
+		case 6:
+			eliminar_lD();
+			system("pause");
+			system("cls");
+			break;
+		case 7:
+			eliminarTd_lD();
+			system("pause");
+			system("cls");
+			break;
+		case 8:
+			ordenarDatos_lD();
+			system("pause");
+			system("cls");
+			break;
+		case 9:
+			n = listaVacia(); 
+			if ( n== true){
+				printf("Lista Vacia\n");
+			}else{
+				printf("La lista contiene elementos\n");
+			}
+			system("pause");
+			system("cls");
+			break;
+		case 0: 
+			flag=0;
+			printf("Adios\n\n");
+			break;	
+		default: 
+			printf("Opcion invalida\n");
+			system("pause");
+			system("cls");
+			break;	
+		}
+	}
+}
+void insertar_lD(){
+	printf("Para dejar de Ingresar Elementos al Nodo Oprime -1\n");
+	while(insertar != -1){
+		nodo * nuevo_nodo = reservar_memoria;
+		printf("ingrese el dato: ");
+		scanf("%d",&nuevo_nodo->dato);
+		if(nuevo_nodo->dato==-1){
+			insertar = -1;
+		}else{
+			if(cabeza==NULL){
+				cabeza=nuevo_nodo;
+				cabeza->siguiente = NULL;
+				cabeza->atras = NULL;
+				fin = cabeza;
+			}else{
+				fin->siguiente = nuevo_nodo;
+				nuevo_nodo->siguiente = NULL;
+				nuevo_nodo->atras =fin;
+				fin = nuevo_nodo;
+			}
+			printf("Nodo ingresado con exito\n");
+		}
+		
+	}
+}
+void mostrar_lD(nodo *lista, int i){
+	nodo * aux = lista;
+	if(cabeza != NULL){
+		
+		while(aux != NULL){
+			printf("%d ", aux->dato);
+			if(i == 1){
+				aux = aux->siguiente;
+			}else{
+				aux = aux->atras;
+			}
+		}
+	}else{
+		printf("La Lista Vacia\n");
+	}
+}
+void buscar_lD(){
+	nodo * actual = reservar_memoria;
+	actual = cabeza;
+	int nodoBuscado,encontrado = 0;
+	if(cabeza != NULL){
+		printf("Ingrese el elemento que desea buscar: ");
+		scanf("%d",&nodoBuscado);
+		while(actual != NULL && encontrado !=1){
+			
+			if(actual->dato == nodoBuscado){
+				printf("El nodo con el elemento ( %d ) se encuentra en la lista\n",nodoBuscado);
+				encontrado = 1;
+			}
+			actual=actual->siguiente;	
+		}
+		if (encontrado == 0){
+			printf("La lista no contiene este Elemento\n");
+		}
+	}else{
+		printf("La Lista esta Vacia\n");
+	}
+}
+void eliminar_lD(){
+	mostrar_lS();
+	nodo * actual = reservar_memoria;
+	actual = cabeza;	
+	nodo * anterior = reservar_memoria;
+	anterior = NULL;
+	int nodoBuscado,encontrado = 0;
+	if(cabeza != NULL){
+		printf("\nIngrese el elemento que desea Eliminar: ");
+		scanf("%d",&nodoBuscado);
+		while(actual != NULL && encontrado !=1){
+			
+			if(actual->dato == nodoBuscado){
+				
+				if(actual == cabeza){
+					cabeza = cabeza->siguiente;
+					cabeza ->atras = NULL;
+				}else{
+					if(actual == fin){
+						anterior->siguiente = NULL;
+						fin = anterior;
+						
+					}else{
+						anterior->siguiente = actual->siguiente;
+						actual->siguiente->atras = anterior;
+					}
+				}
+				printf("\nNodo Eliminado con exito\n");
+				
+				encontrado = 1;
+			}
+			anterior = actual;
+			actual=actual->siguiente;	
+		}
+		if (encontrado == 0){
+			printf("La lista no contiene este Elemento\n");
+		}else{
+			free(anterior); 
+		}
+	}
+}
+void eliminarTd_lD(){
+	nodo * actual = reservar_memoria;
+	actual = cabeza;	
+	if(cabeza != NULL){
+		while(cabeza != NULL ){
+			actual = cabeza;
+			cabeza = cabeza->siguiente;
+			fin = cabeza;
+			free(actual);
+		}
+		printf("\nLista Eliminada Exitosamente\n");
+	}else{
+		printf("La lista esta vacia\n");
+	}
+}
+void editar_lD(){
+	mostrar_lS();
+	nodo * actual = reservar_memoria;
+	actual = cabeza;
+	int nodoBuscado,encontrado = 0;
+	if(cabeza != NULL){
+		printf("Ingrese el elemento que desea editar: ");
+		scanf("%d",&nodoBuscado);
+		while(actual != NULL && encontrado !=1){
+			
+			if(actual->dato == nodoBuscado){
+				printf("Ingrese el Numero por el cual desea cambiar el nodo");
+				scanf("%d",&actual->dato);
+				printf("Elemento editado con exito( %d ) \n",actual->dato);
+				encontrado = 1;
+			}
+			actual=actual->siguiente;	
+		}
+		if (encontrado == 0){
+			printf("La lista no contiene este Elemento\n");
+		}
+	}
+}
+void ordenarDatos_lD(){
+	int aux;
+	nodo * x = cabeza;
+	nodo * y = NULL;
+	if (cabeza != NULL){
+		while(x != NULL){
+			y = x -> siguiente;
+			while(y != NULL){
+				if(x -> dato > y -> dato){
+					aux = x -> dato;
+					x -> dato = y -> dato;
+					y -> dato = aux;
+				}
+				y = y -> siguiente;
+			}
+			x = x -> siguiente;
+		}
+		printf("Datos Ordenados!\n");
+	}else{
+		printf("Lista Vacia\n");
+	}	
+}
+//FUNCIONES JUEGO JOSEPHUS
+void josephus(){
+	int flag = 1;
+	while(flag!=0){
+		printf("JOSEPHUS\n");
+		printf("1. Insertar Participantes\n");
+		printf("2. Buscar Participantes\n");
+		printf("3. Modificar Participantes\n");
+		printf("4. Mostrar Participantes\n");
+		printf("5. Eliminar Participante\n");
+		printf("6. Eliminar Todos los Participantes\n");
+		printf("7. Jugar\n");
+		printf("0. Salir\n\n");
+		printf("Seleccione una Opcion\n\n");
+		scanf("%d",&opcion);
+		
+		system("cls");
+		
+		switch (opcion){
+			
+		case 1: 
+			insertar = 0;
+			insert_Cant_Personas(primero,ultimo);
+			system("pause");
+			system("cls");
+			break;
+			
+		case 2: 
+			buscar_Participantes(primero);
+			system("pause");
+			system("cls");
+			break;
+		case 3:
+			modificar_Participante(primero);
+			system("pause");
+			system("cls");
+			break;
+		case 4:
+			mostrar_Cant_Personas(primero);
+			system("pause");
+			system("cls");
+			break;
+		case 5:
+			eliminar_Participante(primero,ultimo);
+			system("pause");
+			system("cls");
+			break;
+		case 6:
+			eliminar_TdsParticipantes(primero,ultimo);
+			system("pause");
+			system("cls");
+			break;
+		case 7:
+			jugar(primero,ultimo);
+			system("pause");
+			system("cls");
+			break;
+		case 0: 
+			flag=0;
+			printf("Salir\n\n");
+			break;	
+			
+		default: 
+			printf("Opcion invalida\n");
+			system("pause");
+			system("cls");
+			break;	
+			
+			
+			
+			
+		}
+	}
+}
+void insert_Cant_Personas(nodo *& primero,nodo *&ultimo){
+	printf("Para dejar de Ingresar Personas al Juego Oprima -1\n");
+	while(insertar != -1){
+		nodo * nuevo =reservar_memoria;
+		scanf("%d",&nuevo->dato);
+		if(nuevo->dato==-1){
+			insertar = -1;
+		}else{
+			if (primero ==NULL){
+				primero=nuevo;
+				primero->siguiente =primero;
+				ultimo = primero;
+			}else{
+				ultimo->siguiente = nuevo;
+				nuevo->siguiente = primero;
+				ultimo = nuevo;
+			}
+			printf("Participante Ingresado con Exito\n");
+		}
+		
+	}
+}
+
+
+
+void mostrar_Cant_Personas(nodo * primero){
+	int i = 1;
+	nodo * actual = reservar_memoria;
+	actual = primero;
+	if(primero != NULL){
+		do{
+			printf("%d. %d \n",i,actual->dato);
+			actual=actual->siguiente;
+			i=i+1;
+		}while(actual != primero);
+	}else{
+		printf("La Lista Vacia\n");
+	}
+	
+}
+void buscar_Participantes(nodo *primero){
+	int nodoBuscado,encontrado = 0;
+	nodo * actual = reservar_memoria;
+	actual = primero;
+	if(primero != NULL){
+		printf("Ingrese el numero del Participante que busca\n");
+		scanf("%d",&nodoBuscado);
+		do{
+			if(actual->dato == nodoBuscado){
+				printf("El Participante con No.( %d ) se encuentra registrado\n",nodoBuscado);
+				encontrado = 1;
+			}
+			actual=actual->siguiente;
+		}while(actual != primero && encontrado !=1);
+		
+		if(encontrado==0){
+			printf("El Participante no se encuentra registrado\n");
+		}
+	}else{
+		printf("La Lista Vacia\n");
+	}
+}
+void modificar_Participante(nodo *&primero){
+	int nodoBuscado,encontrado = 0,j = 0;
+	nodo * actual = reservar_memoria;
+	actual = primero;
+	if(primero != NULL){
+		mostrar_Cant_Personas(primero);
+		printf("Ingrese la posicion del Participante que desea modificar\n");
+		scanf("%d",&nodoBuscado);
+		do{
+			j=j+1;
+			if(j == nodoBuscado){
+				printf("Ingrese el nuevo dato por el cual desea modificar el participante: ");
+				scanf("%d",&dato);
+				actual->dato = dato; 
+				encontrado = 1;
+			}
+			actual=actual->siguiente;
+		}while(actual != primero && encontrado !=1);
+		
+		if(encontrado==0){
+			printf("El Participante no se encuentra registrado\n");
+		}
+	}else{
+		printf("La Lista Vacia\n");
+	}
+}
+void eliminar_Participante(nodo *&primero,nodo*& ultimo){
+	int nodoBuscado,encontrado = 0,j=0;
+	nodo * actual = reservar_memoria;
+	actual = primero;
+	nodo * anterior = reservar_memoria;
+	anterior = NULL;
+	
+	if(primero != NULL){
+		mostrar_Cant_Personas(primero);
+		printf("Ingrese la Posicion del Participante que desea Eliminar\n");
+		scanf("%d",&nodoBuscado);
+		do{
+			j=j+1;
+			if(j == nodoBuscado){
+				if(actual==primero){
+					primero = primero->siguiente;
+					ultimo->siguiente =primero;
+				}else{
+					if(actual==ultimo){
+						anterior->siguiente = primero;
+						ultimo = anterior;
+					}else{
+						anterior->siguiente = actual->siguiente;
+					}
+				}
+				printf("\n Participante eliminado\n");
+				encontrado = 1;
+			}
+			anterior = actual;
+			actual=actual->siguiente;
+		}while(actual != primero && encontrado !=1);
+		
+		if(encontrado==0){
+			printf("El Participante no se encuentra registrado\n");
+		}else{
+			free(anterior);
+		}
+	}else{
+		printf("La Lista Vacia\n");
+	}
+}
+void eliminar_TdsParticipantes(nodo *&primero,nodo*&ultimo){
+	nodo * actual = reservar_memoria;
+	actual = primero;	
+	if(primero != NULL){
+		do{
+			actual = primero;
+			primero = primero->siguiente;
+			ultimo->siguiente = primero;
+			free(actual);
+		} while(primero != actual);
+		primero = NULL;
+		ultimo = NULL;
+		printf("\nLista Eliminada Exitosamente\n");
+	}else{
+		printf("La lista esta vacia\n");
+	}
+}
+void jugar(nodo *&primero, nodo *& ultimo){
+	if(primero != NULL){
+		while(primero->siguiente != ultimo->siguiente){
+			int k=1,i,j = 0,f=0;
+			nodo * anterior = reservar_memoria;
+			nodo * actual = reservar_memoria;
+			anterior = NULL;
+			actual = primero;
+			if(primero != NULL){
+				do{
+					printf("%d. %d \n",k,actual->dato);
+					actual=actual->siguiente;
+					k+=1;
+				}while(actual != primero);
+			}else{
+				printf("La Lista Vacia\n");
+			}
+			while(f == 0){
+				printf("Cuantos Saltos desea dar para eliminar un Participante ? : ");
+				scanf("%d",&i);
+				if(i==0){
+					printf("Opcion Invalida\n");
+					system("pause");
+					system("cls");
+					mostrar_Cant_Personas(primero);
+				}else{
+					f=1;
+				}
+			}
+			do{
+				anterior = actual;
+				actual=actual->siguiente;
+				j=j+1;
+			}while(i != j);
+			
+			
+			if(j == i){
+				if(actual==primero){
+					primero = primero->siguiente;
+					ultimo->siguiente =primero;
+				}
+				anterior->siguiente = actual->siguiente;
+				
+				free(actual);
+				printf("\n Participante eliminado\n");
+			}
+			j=0;
+		}
+		printf("El Ganador es:  %d \n\n", primero->dato);
+		int f=0;
+		while(f==0){
+		printf("Desea Jugar de Nuevo ? // 1.SI o 0.NO : ");
+		scanf("%d",&dato);
+		
+			if(dato == 1){
+				eliminar_TdsParticipantes(primero,ultimo);
+				system("cls");
+				insertar = 0;
+				insert_Cant_Personas(primero,ultimo);
+				jugar(primero,ultimo);
+				f=1;
+			}else{
+				if (dato==0){
+					eliminar_TdsParticipantes(primero,ultimo);
+					f=1;
+				}else{
+					printf("Opcion Invalida\n");
+					system("pause");
+					system("cls");
+				}
+			}
+		}
+		system("pause");
+		system("cls");
+	}else{
+		printf("La Lista Vacia\n");
+	}
+}
